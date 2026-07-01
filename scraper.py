@@ -1,9 +1,25 @@
-page.goto("https://www.facebook.com/ChimbotenoticiasOficial")
+from playwright.sync_api import sync_playwright
 
-page.wait_for_timeout(5000)
+URL = "https://www.facebook.com/ChimbotenoticiasOficial"
 
-print(page.title())
+print("Iniciando scraper...")
 
-print(page.url)
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
 
-print(page.content())
+    page = browser.new_page()
+
+    page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+
+    print("Título:", page.title())
+    print("URL:", page.url)
+
+    page.wait_for_timeout(5000)
+
+    content = page.content()
+    print("HTML cargado (primeros 500 caracteres):")
+    print(content[:500])
+
+    browser.close()
+
+print("Finalizado")
