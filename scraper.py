@@ -39,18 +39,30 @@ with sync_playwright() as p:
         try:
             text = post.inner_text().strip()
     
-            print("\n--- DEBUG POST ---")
-            print("RAW LENGTH:", len(text))
-            print(text[:300])
+            # FILTRO 1: eliminar vacíos
+            if len(text) < 80:
+                continue
+    
+            # FILTRO 2: eliminar basura tipo iconos
+            if text.count("\n") < 2:
+                continue
+    
+            # FILTRO 3: debe tener contenido humano
+            if "Like" not in text and "Comment" not in text:
+                continue
+    
+            post_id = hashlib.md5(text.encode("utf-8")).hexdigest()
     
             img = post.query_selector("img")
             img_url = img.get_attribute("src") if img else ""
     
-            print("IMG:", img_url)
+            print("\n--- POST VALIDO ---")
+            print("ID:", post_id)
+            print("IMAGEN:", img_url)
+            print(text[:300])
     
         except Exception as e:
-            print("ERROR:", e)
-
+            continue
     
 
  
