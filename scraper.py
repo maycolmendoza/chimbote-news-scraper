@@ -1,6 +1,4 @@
 from playwright.sync_api import sync_playwright
-import re
-import json
 
 URL = "https://www.facebook.com/ChimbotenoticiasOficial"
 
@@ -10,25 +8,23 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page()
 
-    page.goto(URL, wait_until="networkidle", timeout=60000)
-    page.wait_for_timeout(5000)
+    page.goto(URL, wait_until="domcontentloaded", timeout=60000)
 
-    html = page.content()
+    page.wait_for_timeout(8000)
 
-    print("Buscando JSON interno...")
+    print("Buscando posts...")
 
-    # Facebook guarda datos en este patrón
-    match = re.search(r"bigPipe\.onPageletArrive\((.*?)\);", html)
+    posts = page.query_selector_all('div[role="article"]')
 
-    if match:
-        print("Datos encontrados")
+    print(f"Posts encontrados: {len(posts)}")
+
+    for i, post in enumerate(posts[:3]):
         try:
-            data = json.loads(match.group(1))
-            print(json.dumps(data, indent=2)[:2000])
-        except Exception as e:
-            print("Error parseando JSON:", e)
-    else:
-        print("No se encontró BigPipe data")
+            text = post.inner_text()
+            print(f"\n--- POST {i+1} ---")
+            print(text[:500])
+        except:
+            print(f"Error leyendo post {i+1}")
 
     browser.close()
 
