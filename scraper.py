@@ -18,13 +18,20 @@ with sync_playwright() as p:
 
     print(f"Posts encontrados: {len(posts)}")
 
-    for i, post in enumerate(posts[:3]):
+    for i, post in enumerate(posts):
+    
         try:
-            text = post.inner_text()
+            text = post.inner_text().strip()
+    
+            # filtro básico para eliminar basura
+            if len(text) < 50:
+                continue
+    
             print(f"\n--- POST {i+1} ---")
-            print(text[:500])
+            print(text[:600])
+    
         except:
-            print(f"Error leyendo post {i+1}")
+            continue
 
     browser.close()
 
