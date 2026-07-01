@@ -1,1 +1,42 @@
+name: Facebook Scraper
 
+on:
+
+  schedule:
+
+    - cron: "*/10 * * * *"
+
+  workflow_dispatch:
+
+jobs:
+
+  scrape:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+
+        run: |
+
+          pip install -r requirements.txt
+
+          playwright install chromium
+
+      - name: Ejecutar scraper
+
+        env:
+
+          APPS_SCRIPT_URL: ${{ secrets.APPS_SCRIPT_URL }}
+
+        run: |
+
+          python scraper.py
