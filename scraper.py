@@ -1,21 +1,9 @@
-from playwright.sync_api import sync_playwright
+page.goto("TU PAGINA")
 
-print("Iniciando...")
+page.wait_for_timeout(5000)
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
+print(page.title())
 
-    page = browser.new_page()
+print(page.url)
 
-    page.goto(
-        "https://facebook.com",
-        wait_until="networkidle",
-        timeout=60000
-    )
-
-    print(page.title())
-    print(page.url)
-
-    browser.close()
-
-print("Finalizado")
+print(page.content())
