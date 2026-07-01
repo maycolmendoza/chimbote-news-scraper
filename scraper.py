@@ -34,35 +34,26 @@ with sync_playwright() as p:
 
     print(f"Posts encontrados: {len(posts)}")
 
-    
-
     for i, post in enumerate(posts):
 
         try:
             text = post.inner_text().strip()
     
-            if len(text) < 50:
-                continue
+            print("\n--- DEBUG POST ---")
+            print("RAW LENGTH:", len(text))
+            print(text[:300])
     
-            # FILTRO DE PALABRAS
-            if not is_valid_post(text):
-                print("Post bloqueado por filtro")
-                continue
-    
-            # ID único
-            post_id = hashlib.md5(text.encode("utf-8")).hexdigest()
-    
-            # IMAGEN
             img = post.query_selector("img")
             img_url = img.get_attribute("src") if img else ""
     
-            print("\n--- POST ACEPTADO ---")
-            print("ID:", post_id)
-            print("IMAGEN:", img_url)
-            print(text[:400])
+            print("IMG:", img_url)
     
         except Exception as e:
-            continue
+            print("ERROR:", e)
+
+    
+
+ 
 
     browser.close()
 
