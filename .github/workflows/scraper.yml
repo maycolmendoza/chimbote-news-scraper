@@ -1,4 +1,4 @@
-name: Facebook Scraper
+name: Facebook Scraper V2
 
 on:
   workflow_dispatch:
