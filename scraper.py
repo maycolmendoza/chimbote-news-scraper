@@ -1,4 +1,4 @@
-page.goto("TU PAGINA")
+page.goto("https://www.facebook.com/ChimbotenoticiasOficial")
 
 page.wait_for_timeout(5000)
 
