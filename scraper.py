@@ -34,8 +34,7 @@ with sync_playwright() as p:
 
     print(f"Posts encontrados: {len(posts)}")
 
-    img = post.query_selector("img")
-    img_url = img.get_attribute("src") if img else ""
+    
 
     for i, post in enumerate(posts):
 
